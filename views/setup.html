@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Instalasi AMB Parking</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<style>
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('/assets/inter.woff2') format('woff2'); }
+  :root {
+    --ink: #0f1b33; --ink-2: #44526b; --ink-3: #8a96ab; --line: #e3e8f1; --field: #fff;
+    --accent: #1f5fe0; --accent-2: #3b82f6; --accent-soft: #edf3ff;
+    --navy: #0b1633; --gold: #d8b46a; --gold-2: #f2dca4;
+    --good: #0d7a55; --good-soft: #e8f7f0; --bad: #c0362c; --bad-soft: #fdeeed; --warn: #8a5a00; --warn-soft: #fff8e6;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; color: var(--ink); font: 14px/1.55 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; font-feature-settings: 'cv11', 'ss01'; -webkit-font-smoothing: antialiased; background: #f5f7fb; }
+  .layout { display: grid; grid-template-columns: minmax(340px, 36%) minmax(0, 1fr); height: 100vh; overflow: hidden; }
+
+  /* Panel kiri: navy malam + aksen emas champagne */
+  .intro { position: relative; isolation: isolate; height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 36px 44px; color: #fff; overflow: hidden;
+    background: radial-gradient(700px 480px at 110% -8%, #2f6fe04d, transparent 62%), radial-gradient(560px 420px at -18% 108%, #d8b46a24, transparent 60%), linear-gradient(162deg, #0a1430 0%, #0d1d44 52%, #112a5e 100%); }
+  .intro::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(#ffffff17 1px, transparent 1.2px) 0 0 / 22px 22px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 85%); mask-image: linear-gradient(180deg, #000 0%, transparent 85%); }
+  .intro::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent); opacity: .55; }
+  .intro .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--gold-2); font-size: 11px; font-weight: 700; letter-spacing: 2.4px; text-transform: uppercase; }
+  .intro .eyebrow::before { content: ''; width: 26px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+  .intro h1 { margin: 10px 0 10px; font-size: 32px; font-weight: 700; line-height: 1.15; letter-spacing: -.6px; }
+  .intro h1 span { background: linear-gradient(90deg, #fff, #c9dafc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .intro p { margin: 0; max-width: 430px; color: #b7c4df; font-size: 14px; }
+  .steps { position: relative; display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .steps li { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding-bottom: 16px; }
+  .steps li:not(:last-child)::before { content: ''; position: absolute; left: 17px; top: 38px; bottom: 2px; width: 1.5px; background: linear-gradient(180deg, #ffffff40, #ffffff12); }
+  .steps .dot { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #ffffff33; border-radius: 50%; background: #ffffff0d; color: #dbe5f7; font-weight: 700; font-size: 13px; transition: .25s; }
+  .steps strong { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -.1px; }
+  .steps small { color: #98a9c9; font-size: 12.5px; }
+  .steps li.active .dot { border-color: transparent; background: linear-gradient(135deg, var(--gold-2), var(--gold)); color: #2a1d02; box-shadow: 0 0 0 5px #d8b46a26, 0 6px 18px #d8b46a40; }
+  .steps li.done .dot { border-color: transparent; background: #6fe0b4; color: #063a28; }
+  .intro .secure { display: flex; gap: 12px; align-items: flex-start; max-width: 430px; padding: 13px 15px; border: 1px solid #ffffff1f; border-radius: 14px; background: linear-gradient(135deg, #ffffff12, #ffffff06); backdrop-filter: blur(6px); font-size: 12.5px; color: #b7c4df; }
+  .intro .secure svg { flex: none; margin-top: 1px; color: var(--gold-2); }
+
+  /* Ilustrasi: gerbang parkir premium malam hari + server & database terhubung (bergerak) */
+  .ilus { width: 100%; max-width: 440px; height: auto; overflow: visible; filter: drop-shadow(0 24px 40px #02081a80); }
+  .ilus .car { animation: car 9s cubic-bezier(.45, 0, .3, 1) infinite; }
+  .ilus .arm { transform-box: view-box; transform-origin: 283px 196px; animation: arm 9s ease-in-out infinite; }
+  .ilus .sensor { animation: sensor 9s steps(1) infinite; }
+  .ilus .flow { stroke-dasharray: 3 8; animation: flow 1.2s linear infinite; }
+  .ilus .blink { animation: blink 1.8s ease-in-out infinite; }
+  .ilus .blink.b2 { animation-delay: .6s; }
+  .ilus .blink.b3 { animation-delay: 1.2s; }
+  .ilus .twinkle { animation: blink 3.2s ease-in-out infinite; }
+  .ilus .twinkle.t2 { animation-delay: 1.1s; }
+  .ilus .twinkle.t3 { animation-delay: 2.2s; }
+  .ilus .wheel { transform-box: fill-box; transform-origin: center; animation: wheel 9s linear infinite; }
+  .ilus .beam { animation: beam 9s ease-in-out infinite; }
+  @keyframes car { 0% { transform: translateX(-150px); } 26%, 44% { transform: translateX(20px); } 80%, 100% { transform: translateX(470px); } }
+  @keyframes arm { 0%, 30% { transform: rotate(0deg); } 41%, 68% { transform: rotate(80deg); } 80%, 100% { transform: rotate(0deg); } }
+  @keyframes sensor { 0% { fill: #ff6b6b; } 34% { fill: #5ef0b4; } 76% { fill: #ff6b6b; } }
+  @keyframes flow { to { stroke-dashoffset: -22; } }
+  @keyframes blink { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+  @keyframes wheel { 0%, 26% { transform: rotate(0deg); } 44% { transform: rotate(420deg); } 80%, 100% { transform: rotate(1500deg); } }
+  @keyframes beam { 0%, 100% { opacity: .9; } 50% { opacity: .65; } }
+  @media (prefers-reduced-motion: reduce) { .ilus * { animation: none !important; } }
+
+  /* Panel kanan: form */
+  .panel { position: relative; isolation: isolate; display: flex; justify-content: center; height: 100vh; padding: 24px 32px; overflow: hidden auto;
+    background: radial-gradient(620px 420px at 100% 0%, #dfe9ff, transparent 65%), radial-gradient(520px 380px at 0% 100%, #f3ead6, transparent 65%), #f5f7fb; }
+  .panel::before { content: ''; position: absolute; z-index: -1; right: -240px; top: -240px; width: 780px; height: 780px; border-radius: 50%;
+    background: repeating-radial-gradient(circle, transparent 0 64px, #1f5fe00d 65px 66px); animation: drift 28s ease-in-out infinite alternate; }
+  .panel::after { content: ''; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: radial-gradient(#0f1b330a 1px, transparent 1.2px) 0 0 / 24px 24px;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, transparent 40%, #000); mask-image: radial-gradient(70% 60% at 50% 50%, transparent 40%, #000); }
+  .panel .shape { position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; }
+  .panel .s1 { left: -110px; bottom: -140px; width: 380px; height: 380px; border: 1px solid #d8b46a33; animation: drift 24s ease-in-out infinite alternate-reverse; }
+  .panel .s2 { left: 7%; top: 11%; width: 10px; height: 10px; background: #3b82f640; animation: float 9s ease-in-out infinite; }
+  .panel .s3 { right: 8%; bottom: 13%; width: 18px; height: 18px; border: 1.5px solid #d8b46a80; animation: float 11s ease-in-out infinite reverse; }
+  .panel .s4 { right: 23%; top: 8%; width: 6px; height: 6px; background: #d8b46a99; animation: float 7s ease-in-out infinite; }
+  @keyframes drift { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(-30px, 24px) rotate(8deg); } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  @media (prefers-reduced-motion: reduce) { .panel::before, .panel .shape { animation: none; } }
+  .form-wrap { width: 100%; max-width: 780px; margin: auto 0; }
+  .logo { display: block; height: 66px; width: auto; margin: 0 auto 18px; }
+
+  .card { position: relative; padding: 24px 28px 22px; border: 1px solid #e4e9f2; border-radius: 22px; background: #fffffff2; backdrop-filter: blur(10px);
+    box-shadow: 0 1px 2px #0f1b330a, 0 28px 56px -18px #10265a2e; }
+  .card::before { content: ''; position: absolute; left: 28px; right: 28px; top: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--gold), var(--accent-2), transparent); opacity: .8; }
+  .group + .group { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--line); }
+  .group-title { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 15px; font-weight: 650; letter-spacing: -.2px; }
+  .group-title .num { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(135deg, #142a5c, #1f5fe0); color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 4px 10px #1f5fe033; }
+  .group-title small { margin-left: auto; color: var(--ink-3); font-size: 12px; font-weight: 450; }
+  .grid { display: grid; grid-template-columns: 1.3fr .7fr 1.3fr; align-items: end; gap: 12px 14px; }
+  .full { grid-column: 1 / -1; }
+  .grid-server { grid-template-columns: .7fr .7fr 1.6fr; }
+  .sudo-note { margin: 8px 0 0; color: var(--ink-3); font-size: 11.5px; }
+  /* Status MariaDB & pilihan mode database */
+  .db-status { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(135deg, #f8faff, #f3f6fb); }
+  .db-status .ds-ico { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: var(--accent-soft); color: var(--accent); }
+  .db-status.ok { border-color: #cdeedd; background: linear-gradient(135deg, #f2fbf6, #eaf7f0); }
+  .db-status.ok .ds-ico { background: #fff; color: var(--good); box-shadow: 0 2px 8px #0d7a5522; }
+  .db-status.warn { border-color: #f0dca6; background: linear-gradient(135deg, #fffaf0, #fff4dc); }
+  .db-status.warn .ds-ico { background: #fff; color: var(--warn); box-shadow: 0 2px 8px #8a5a0022; }
+  .db-status .ds-txt { flex: 1; min-width: 0; display: grid; font-size: 12px; color: var(--ink-2); }
+  .db-status .ds-txt strong { color: var(--ink); font-size: 13.5px; font-weight: 650; }
+  .db-status .btn { flex: none; height: 38px; }
+  .mode { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .mode-opt { position: relative; display: flex; gap: 11px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s, background .15s; }
+  .mode-opt:hover { border-color: #c5d4f2; }
+  .mode-opt input { flex: none; width: 16px; height: 16px; margin: 2px 0 0; padding: 0; box-shadow: none; accent-color: var(--accent); }
+  .mode-opt b { display: block; color: var(--ink); font-size: 13.5px; font-weight: 650; }
+  .mode-opt small { display: block; margin-top: 2px; color: var(--ink-3); font-size: 11.5px; font-weight: 400; line-height: 1.45; }
+  .mode-opt:has(input:checked) { border-color: var(--accent); background: linear-gradient(135deg, #f4f8ff, #ecf2ff); box-shadow: 0 0 0 3px #1f5fe014; }
+  .grid-db { grid-template-columns: 1fr 1fr auto; }
+  [data-manual][hidden], [data-otomatis][hidden] { display: none !important; }
+  label { display: grid; gap: 6px; color: var(--ink); font-size: 12.5px; font-weight: 600; }
+  label .hint { margin-left: 4px; color: var(--ink-3); font-size: 11.5px; font-weight: 400; }
+  label .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  input { width: 100%; height: 42px; padding: 0 14px; border: 1px solid #dde3ee; border-radius: 11px; background: var(--field); color: var(--ink); font: inherit; font-weight: 500; box-shadow: 0 1px 2px #0f1b3308; transition: border-color .15s, box-shadow .15s; }
+  input::placeholder { color: #a8b2c4; font-weight: 400; }
+  input:hover { border-color: #c9d3e4; }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px #1f5fe01f; }
+  .pw { position: relative; }
+  .pw input { padding-right: 44px; }
+  .pw button { position: absolute; right: 5px; top: 5px; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--ink-3); cursor: pointer; }
+  .pw button:hover { background: var(--accent-soft); color: var(--accent); }
+
+  /* Kode instalasi: kartu champagne */
+  .kode-box { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding: 11px 14px; border: 1px solid #ead8ab; border-radius: 14px; background: linear-gradient(135deg, #fdf9ef, #f8efd8); color: #7a5a17; }
+  .kode-box .ico { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, var(--gold-2), var(--gold)); color: #3b2a07; box-shadow: 0 4px 12px #d8b46a55; }
+  .kode-box .txt { flex: 1; min-width: 0; font-size: 12.5px; }
+  .kode-box .txt strong { display: block; color: #4a3608; font-size: 13px; font-weight: 600; }
+  .kode-box code { margin-left: 4px; font: 700 17px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 2.5px; color: var(--navy); }
+  .kode-box button { flex: none; height: 34px; padding: 0 14px; border: 1px solid #e2c886; border-radius: 9px; background: #fff; color: #5c430c; font: 600 12.5px inherit; font-family: inherit; cursor: pointer; transition: .15s; }
+  .kode-box button:hover { background: #fffaf0; border-color: var(--gold); }
+  .kode-manual { margin-bottom: 18px; }
+  .kode-manual input { font: 700 17px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 3px; text-transform: uppercase; }
+  [hidden] { display: none !important; }
+
+  .row-actions { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px; padding: 0 18px; border: 1px solid #d8e0ec; border-radius: 11px; background: #fff; color: var(--ink); font: 600 13.5px inherit; font-family: inherit; cursor: pointer; box-shadow: 0 1px 2px #0f1b3308; transition: .15s; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); background: #f8faff; }
+  .btn-primary { position: relative; overflow: hidden; width: 100%; height: 50px; margin-top: 14px; border: 0; border-radius: 13px; background: linear-gradient(135deg, #0f2a66 0%, #1a4fc4 55%, #2f7cf0 100%); color: #fff; font-size: 15px; letter-spacing: .1px; box-shadow: 0 14px 28px -10px #1a4fc499, inset 0 1px 0 #ffffff2e; }
+  .btn-primary::after { content: ''; position: absolute; top: 0; bottom: 0; left: -40%; width: 30%; background: linear-gradient(90deg, transparent, #ffffff2e, transparent); transform: skewX(-20deg); transition: left .6s; }
+  .btn-primary:hover { color: #fff; background: linear-gradient(135deg, #0f2a66 0%, #1a4fc4 55%, #2f7cf0 100%); transform: translateY(-1px); box-shadow: 0 18px 32px -10px #1a4fc4b3, inset 0 1px 0 #ffffff2e; }
+  .btn-primary:hover::after { left: 120%; }
+  .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+  .spin { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .msg { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; padding: 9px 13px; border: 1px solid transparent; border-radius: 11px; font-size: 13px; }
+  .msg:empty { display: none; }
+  .msg.ok { border-color: #cdeedd; background: var(--good-soft); color: var(--good); }
+  .msg.err { border-color: #f6cfcb; background: var(--bad-soft); color: var(--bad); }
+  .msg.info { border-color: #d6e3fb; background: var(--accent-soft); color: var(--accent); }
+  .akun { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 11px 14px; border: 1px solid #dfe7f6; border-radius: 14px; background: linear-gradient(135deg, #f7f9ff, #eef3fd); }
+  .akun-ico { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: #fff; color: var(--accent); box-shadow: 0 2px 8px #1f5fe01f; }
+  .akun-txt { flex: 1; min-width: 0; display: grid; font-size: 12px; color: var(--ink-2); }
+  .akun-txt strong { color: var(--ink); font-size: 13px; font-weight: 650; }
+  .akun-cred { display: flex; gap: 8px; flex-wrap: wrap; }
+  .akun-cred span { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border: 1px solid #dbe4f5; border-radius: 9px; background: #fff; color: var(--ink-3); font-size: 11.5px; }
+  .akun-cred b { color: var(--navy); font: 700 13px ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .note { margin: 10px 0 0; color: var(--ink-3); font-size: 12px; text-align: center; }
+
+  @media (max-height: 820px) {
+    .intro .secure { display: none; } .ilus { max-width: 340px; } .intro { gap: 16px; } .intro h1 { font-size: 28px; }
+    .logo { height: 50px; margin-bottom: 12px; } .card { padding: 18px 24px 16px; }
+    .kode-box { margin-bottom: 12px; padding: 8px 12px; } .group + .group { margin-top: 12px; padding-top: 12px; }
+    .db-status { padding: 8px 12px; margin-bottom: 10px; } .mode-opt { padding: 9px 12px; } .mode { margin-bottom: 10px; }
+    .akun { margin-top: 12px; padding: 8px 12px; } .btn-primary { height: 46px; margin-top: 10px; } .note { margin-top: 6px; }
+  }
+  /* Layar pendek / sempit: boleh scroll agar tidak terpotong */
+  @media (max-height: 700px) { .layout, .panel, .intro { height: auto; min-height: 100vh; overflow: visible; } .panel { overflow: hidden; } }
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: minmax(0, 1fr); height: auto; overflow: visible; }
+    .intro { height: auto; padding: 22px 18px; gap: 14px; }
+    .intro h1 { font-size: 24px; }
+    .intro p, .steps small, .intro .secure, .ilus { display: none; }
+    .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .steps li { grid-template-columns: 1fr; justify-items: start; padding-bottom: 0; }
+    .steps li::before { display: none; }
+    .panel { height: auto; padding: 20px 16px 32px; overflow: hidden; }
+    .grid, .grid-server, .grid-db { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 575px) {
+    .grid, .grid-server, .grid-db, .mode { grid-template-columns: minmax(0, 1fr); }
+    .card { padding: 18px 16px; border-radius: 18px; }
+    .kode-box, .akun { flex-wrap: wrap; }
+    .group-title small { display: none; }
+  }
+
+  /* ===== Tema AMB Parking: industrial navy + oranye (selaras halaman login AMB) ===== */
+  :root { --accent: #ff5201; --accent-2: #ff7a2f; --accent-soft: #fff1e8; --navy: #0b1630; --navy-2: #14244a; --navy-3: #1d3263; --gold: #ff5201; --gold-2: #ffb36b; }
+  .layout { grid-template-columns: minmax(340px, 37%) minmax(0, 1fr); }
+  .intro { justify-content: space-between; padding: 34px 44px 30px;
+    background: radial-gradient(520px 300px at 50% 108%, #ff52013d, transparent 70%), radial-gradient(600px 420px at 115% -10%, #1d326399, transparent 65%), linear-gradient(170deg, #0b1630 0%, #0f1d3d 55%, #14244a 100%); }
+  /* Kisi isometrik halus */
+  .intro::before { background: repeating-linear-gradient(30deg, #ffffff0b 0 1px, transparent 1px 26px), repeating-linear-gradient(150deg, #ffffff0b 0 1px, transparent 1px 26px);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 75%); mask-image: linear-gradient(180deg, #000 0%, transparent 75%); }
+  .intro::after { left: auto; right: 0; width: 4px; background: linear-gradient(180deg, transparent, #ff5201 25%, #ff7a2f 75%, transparent); opacity: .9; }
+  .brand-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand-top img { height: 44px; width: auto; }
+  .brand-top .tag { padding: 5px 10px; border: 1px solid #ff520166; border-radius: 999px; background: #ff520114; color: #ffb36b; font-size: 10.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+  .intro .eyebrow { color: #ffb36b; }
+  .intro .eyebrow::before { background: linear-gradient(90deg, #ff5201, transparent); }
+  .intro h1 { font-size: 34px; font-weight: 800; letter-spacing: -.8px; }
+  .intro h1 span { background: none; color: #fff; }
+  .intro h1 em { font-style: normal; color: #ff7a2f; }
+  .intro p { color: #aab7d3; }
+  .steps .dot { border-radius: 10px; border-color: #ffffff2b; background: #ffffff0a; }
+  .steps li:not(:last-child)::before { background: repeating-linear-gradient(180deg, #ffffff40 0 4px, transparent 4px 8px); }
+  .steps li.active .dot { background: linear-gradient(135deg, #ff7a2f, #ff5201); color: #fff; box-shadow: 0 0 0 5px #ff520126, 0 8px 18px #ff520155; }
+  .steps li.done .dot { background: #31c48d; color: #04311f; }
+  .steps small { color: #8d9cbd; }
+  .intro .secure { border-color: #ff52012e; background: linear-gradient(135deg, #ff52010f, #ffffff05); }
+  .intro .secure svg { color: #ff7a2f; }
+  .ilus { max-width: 450px; filter: drop-shadow(0 26px 44px #000a1f99); }
+  .ilus .car { animation: car 9s cubic-bezier(.45, 0, .3, 1) infinite; }
+  .ilus .arm { transform-origin: 170px 221px; }
+  .ilus .glow-p { animation: blink 2.4s ease-in-out infinite; }
+  @keyframes car { 0% { transform: translateX(-140px); } 26%, 44% { transform: translateX(-30px); } 80%, 100% { transform: translateX(470px); } }
+  @keyframes arm { 0%, 30% { transform: rotate(0deg); } 41%, 68% { transform: rotate(82deg); } 80%, 100% { transform: rotate(0deg); } }
+
+  /* Form */
+  .panel { background: radial-gradient(600px 420px at 100% 0%, #ffe6d6, transparent 62%), radial-gradient(520px 380px at 0% 100%, #dfe6f5, transparent 65%), #f5f7fb; }
+  .panel::before { background: repeating-radial-gradient(circle, transparent 0 64px, #0b16300d 65px 66px); }
+  .panel::after { background: repeating-linear-gradient(30deg, #0b16300a 0 1px, transparent 1px 28px), repeating-linear-gradient(150deg, #0b16300a 0 1px, transparent 1px 28px); }
+  .panel .s1 { border-color: #ff520133; } .panel .s2 { background: #0b163033; } .panel .s3 { border-color: #ff520180; } .panel .s4 { background: #ff520199; }
+  .panel .logo { display: none; }
+  .card { border-radius: 18px; box-shadow: 0 1px 2px #0b16300d, 0 30px 60px -20px #0b163040; }
+  .card::before { left: 0; right: 0; top: 0; height: 4px; border-radius: 18px 18px 0 0; background: linear-gradient(90deg, #0b1630, #1d3263 45%, #ff5201 75%, #ff7a2f); opacity: 1; }
+  .group-title .num { border-radius: 7px; background: #0b1630; box-shadow: inset 0 -2px 0 #ff5201; }
+  input:focus { border-color: #ff5201; box-shadow: 0 0 0 4px #ff52011f; }
+  .mode-opt:hover { border-color: #ffc9a8; }
+  .mode-opt input { accent-color: #ff5201; }
+  .mode-opt:has(input:checked) { border-color: #ff5201; background: linear-gradient(135deg, #fff8f3, #fff1e8); box-shadow: 0 0 0 3px #ff520114; }
+  .btn:hover { border-color: #ff5201; color: #ff5201; background: #fffaf6; }
+  .pw button:hover { background: #fff1e8; color: #ff5201; }
+  .btn-primary { border-radius: 12px; background: linear-gradient(135deg, #ff5201 0%, #ff6a1a 55%, #ff8a3d 100%); box-shadow: 0 14px 28px -10px #ff5201a6, inset 0 1px 0 #ffffff40; }
+  .btn-primary:hover { background: linear-gradient(135deg, #f04c00 0%, #ff6a1a 55%, #ff8a3d 100%); box-shadow: 0 18px 32px -10px #ff5201bf, inset 0 1px 0 #ffffff40; }
+  .kode-box { border-color: #d5dcea; background: linear-gradient(135deg, #f6f8fc, #eef2f9); color: #44526b; }
+  .kode-box .ico { background: linear-gradient(135deg, #ff7a2f, #ff5201); color: #fff; box-shadow: 0 4px 12px #ff520155; }
+  .kode-box .txt strong { color: #0b1630; }
+  .kode-box code { color: #ff5201; }
+  .kode-box button { border-color: #d5dcea; color: #0b1630; }
+  .kode-box button:hover { border-color: #ff5201; background: #fff; }
+  .msg.info { border-color: #ffd6bf; background: #fff4ec; color: #c24000; }
+  .akun { border-color: #e1e6f0; background: linear-gradient(135deg, #f7f9fc, #f0f3f9); }
+  .akun-ico { color: #ff5201; box-shadow: 0 2px 8px #ff52011f; }
+  .akun-cred b { color: #0b1630; }
+  .db-status .ds-ico { background: #fff1e8; color: #ff5201; }
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .intro { padding: 22px 18px; gap: 14px; }
+    .intro h1 { font-size: 24px; }
+    .brand-top img { height: 34px; } .intro { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="intro">
+    <div class="brand-top"><img src="/assets/logo-white.png" alt="AMB Parking"><span class="tag">Smart Parking</span></div>
+    <div>
+      <div class="eyebrow">Instalasi server</div>
+      <h1><span>Siapkan AMB Parking</span> <em>dalam 3 langkah</em></h1>
+      <p>Database, server, dan aplikasi disiapkan otomatis dari halaman ini. Tidak perlu mengubah file konfigurasi secara manual.</p>
+    </div>
+    <svg class="ilus" viewBox="0 0 440 290" role="img" aria-label="Ilustrasi gedung parkir bertingkat terhubung ke server dan database">
+      <defs>
+        <linearGradient id="am-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1630"/><stop offset=".7" stop-color="#16295a"/><stop offset="1" stop-color="#2a2f5c"/></linearGradient>
+        <radialGradient id="am-sunset" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff7a2f" stop-opacity=".75"/><stop offset=".55" stop-color="#ff5201" stop-opacity=".22"/><stop offset="1" stop-color="#ff5201" stop-opacity="0"/></radialGradient>
+        <linearGradient id="am-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101d40"/><stop offset="1" stop-color="#070f24"/></linearGradient>
+        <linearGradient id="am-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f6fb"/><stop offset="1" stop-color="#b3c0d6"/></linearGradient>
+        <linearGradient id="am-metalv" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c7d1e2"/><stop offset=".5" stop-color="#f4f7fb"/><stop offset="1" stop-color="#9dacc6"/></linearGradient>
+        <linearGradient id="am-orange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff5201"/></linearGradient>
+        <linearGradient id="am-car" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfe6f1"/><stop offset="1" stop-color="#8e9fbd"/></linearGradient>
+        <linearGradient id="am-window" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fb8e6"/><stop offset="1" stop-color="#1d3263"/></linearGradient>
+        <linearGradient id="am-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff30"/><stop offset="1" stop-color="#ffffff08"/></linearGradient>
+        <linearGradient id="am-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe2c4" stop-opacity=".6"/><stop offset="1" stop-color="#ffe2c4" stop-opacity="0"/></linearGradient>
+        <radialGradient id="am-rim" cx=".4" cy=".4" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#8d9bb3"/></radialGradient>
+        <filter id="am-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="am-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+        <clipPath id="am-frame"><rect width="440" height="290" rx="20"/></clipPath>
+        <g id="am-parkir"><path d="M0 14q0-6 6-7l8-1q6-6 14-7h10q7 0 12 5l4 4q4 1 5 5v4q0 3-3 3H3q-3 0-3-3z"/><circle cx="12" cy="18" r="4" fill="#0a0f1c"/><circle cx="44" cy="18" r="4" fill="#0a0f1c"/></g>
+      </defs>
+      <g clip-path="url(#am-frame)">
+        <rect width="440" height="290" fill="url(#am-sky)"/>
+        <g fill="#fff"><circle class="twinkle" cx="34" cy="20" r="1"/><circle class="twinkle t2" cx="210" cy="16" r="1.1"/><circle class="twinkle t3" cx="270" cy="40" r=".8"/><circle class="twinkle" cx="420" cy="26" r="1"/><circle class="twinkle t2" cx="118" cy="128" r=".8"/></g>
+        <ellipse cx="300" cy="258" rx="230" ry="80" fill="url(#am-sunset)"/>
+        <!-- Kota di kejauhan -->
+        <path d="M0 252v-70h18v-12h16v82zM40 252v-96h26v96zM70 252v-56h22v56zM100 252v-80h18l6-10 6 10v80zM136 252v-48h24v48z" fill="#13244a"/>
+        <g fill="#ffb36b" opacity=".55"><rect x="46" y="166" width="3" height="4"/><rect x="56" y="176" width="3" height="4" class="twinkle"/><rect x="46" y="196" width="3" height="4"/><rect x="106" y="190" width="3" height="4" class="twinkle t2"/><rect x="8" y="196" width="3" height="4"/><rect x="142" y="214" width="3" height="4"/></g>
+        <!-- Tanah & jalan -->
+        <rect y="252" width="440" height="38" fill="url(#am-ground)"/>
+        <rect y="251.5" width="440" height="1.5" fill="#ff52015e"/>
+        <path d="M12 272h28M70 272h28M128 272h28M186 272h28M244 272h28M302 272h28M360 272h28M418 272h28" stroke="#ffffff2a" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="300" cy="256" rx="110" ry="6" fill="#ff7a2f" opacity=".35" filter="url(#am-blur)"/>
+        <!-- Gedung parkir bertingkat (2.5D) -->
+        <path d="M190 110l24-14h212l-24 14z" fill="#22396d"/>
+        <path d="M402 110l24-14v142l-24 14z" fill="#13234a"/>
+        <path d="M410 120l8-5v20l-8 5zM410 160l8-5v20l-8 5zM410 200l8-5v20l-8 5z" fill="#ff52014d"/>
+        <rect x="196" y="118" width="206" height="36" fill="#0c1834"/>
+        <rect x="196" y="161" width="206" height="35" fill="#0c1834"/>
+        <rect x="196" y="203" width="206" height="49" fill="#0a1430"/>
+        <g fill="#3a5288">
+          <use href="#am-parkir" x="212" y="130"/><use href="#am-parkir" x="282" y="130"/><use href="#am-parkir" x="342" y="130" fill="#e3e9f4"/>
+          <use href="#am-parkir" x="222" y="172" fill="#ff7a2f"/><use href="#am-parkir" x="300" y="172"/>
+        </g>
+        <g fill="#ffd9bd" filter="url(#am-glow)" opacity=".85"><rect x="226" y="120" width="14" height="1.6" rx=".8"/><rect x="296" y="120" width="14" height="1.6" rx=".8"/><rect x="362" y="120" width="14" height="1.6" rx=".8"/><rect x="226" y="163" width="14" height="1.6" rx=".8"/><rect x="296" y="163" width="14" height="1.6" rx=".8"/><rect x="362" y="163" width="14" height="1.6" rx=".8"/><rect x="250" y="205" width="16" height="1.6" rx=".8"/><rect x="330" y="205" width="16" height="1.6" rx=".8"/></g>
+        <rect x="190" y="110" width="212" height="8" fill="url(#am-metal)"/>
+        <rect x="190" y="154" width="212" height="7" fill="url(#am-metal)"/>
+        <rect x="190" y="196" width="212" height="7" fill="url(#am-metal)"/>
+        <rect x="190" y="115" width="212" height="2.5" fill="#ff5201"/><rect x="190" y="158.5" width="212" height="2.5" fill="#ff5201"/><rect x="190" y="200.5" width="212" height="2.5" fill="#ff5201"/>
+        <g fill="url(#am-metalv)"><rect x="196" y="118" width="6" height="134"/><rect x="264" y="118" width="6" height="134"/><rect x="332" y="118" width="6" height="134"/><rect x="396" y="118" width="6" height="134"/></g>
+        <text x="300" y="248" fill="#ffb36b" font-size="7" font-weight="800" text-anchor="middle" letter-spacing="2" font-family="Inter, Segoe UI, sans-serif" opacity=".85">ENTRANCE</text>
+        <!-- Papan P di atap -->
+        <rect x="360" y="66" width="4" height="32" fill="#9dacc6"/>
+        <rect x="336" y="38" width="52" height="34" rx="8" fill="#ff5201" opacity=".35" filter="url(#am-blur)" class="glow-p"/>
+        <rect x="340" y="42" width="44" height="28" rx="7" fill="url(#am-orange)" stroke="#ffd2b0" stroke-width="1"/>
+        <text x="362" y="63.5" fill="#fff" font-size="20" font-weight="900" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif">P</text>
+        <!-- Mesin gate & palang oranye -->
+        <rect x="160" y="248" width="22" height="4" rx="2" fill="#b3c0d6"/>
+        <rect x="162" y="212" width="16" height="38" rx="4" fill="url(#am-metalv)"/>
+        <rect x="164.5" y="227" width="11" height="8" rx="2" fill="#0b1630"/><rect x="166" y="228.5" width="8" height="5" rx="1" fill="#ffb36b" filter="url(#am-glow)"/>
+        <circle class="sensor" cx="170" cy="241" r="2.2" fill="#ff6b6b" filter="url(#am-glow)"/>
+        <g class="arm">
+          <rect x="76" y="217.5" width="96" height="7" rx="3.5" fill="#fbfcff"/>
+          <path d="M84 217.5h8l-4 7h-8zM104 217.5h8l-4 7h-8zM124 217.5h8l-4 7h-8zM144 217.5h8l-4 7h-8z" fill="#ff5201"/>
+        </g>
+        <circle cx="170" cy="221" r="5" fill="#ff5201" stroke="#fff" stroke-width="2"/>
+        <!-- Mobil -->
+        <g class="car"><g transform="translate(0 66) scale(.8)">
+          <ellipse cx="66" cy="231" rx="60" ry="3.5" fill="#000" opacity=".45"/>
+          <path class="beam" d="M124 205L206 190v38z" fill="url(#am-beam)"/>
+          <path d="M6 215q0-10 10-12l18-3q12-14 28-17h24q14 0 24 10l6 7q8 2 10 9v6q0 6-6 6H12q-6 0-6-6z" fill="url(#am-car)"/>
+          <path d="M40 199q10-11 23-13h9v13zM76 186h10q11 0 20 11l-30 2z" fill="url(#am-window)" opacity=".92"/>
+          <path d="M12 211h112" stroke="#ff5201" stroke-width="2.2"/>
+          <rect x="118" y="205" width="8" height="3" rx="1.5" fill="#fff3e2" filter="url(#am-glow)"/>
+          <rect x="5" y="205" width="6" height="3" rx="1.5" fill="#ff3b3b" filter="url(#am-glow)"/>
+          <g class="wheel"><circle cx="31" cy="222" r="9" fill="#0a0f1c"/><circle cx="31" cy="222" r="5.5" fill="url(#am-rim)"/><path d="M31 217v10M26 222h10" stroke="#6b7a94" stroke-width="1.2"/></g>
+          <g class="wheel"><circle cx="101" cy="222" r="9" fill="#0a0f1c"/><circle cx="101" cy="222" r="5.5" fill="url(#am-rim)"/><path d="M101 217v10M96 222h10" stroke="#6b7a94" stroke-width="1.2"/></g>
+        </g></g>
+        <!-- Server kubus (seperti logo AMB) & database -->
+        <g transform="translate(0 4)">
+          <path d="M70 38l28 14-28 14-28-14z" fill="#ff8a3d"/>
+          <path d="M42 52l28 14v32L42 84z" fill="#ff5201"/>
+          <path d="M70 66l28-14v32L70 98z" fill="#c23f00"/>
+          <path d="M48 62l16 8M48 70l16 8M48 78l16 8" stroke="#ffffffb3" stroke-width="1.6" stroke-linecap="round"/>
+          <circle class="blink" cx="88" cy="68" r="2" fill="#5ef0b4" filter="url(#am-glow)"/><circle class="blink b2" cx="88" cy="76" r="2" fill="#5ef0b4" filter="url(#am-glow)"/>
+          <path d="M70 38l28 14v32L70 98 42 84V52z" fill="none" stroke="#ffd2b0" stroke-width=".8" opacity=".7"/>
+          <text x="70" y="114" fill="#c9d3ea" font-size="7.5" font-weight="700" text-anchor="middle" letter-spacing="2" font-family="Inter, Segoe UI, sans-serif">SERVER</text>
+        </g>
+        <g transform="translate(124 40)">
+          <path d="M0 9v42c0 5 12 9 26 9s26-4 26-9V9" fill="url(#am-glass)" stroke="#ffffff45"/>
+          <ellipse cx="26" cy="9" rx="26" ry="9" fill="#ffffff26" stroke="#ffffff70"/>
+          <path d="M0 23c0 5 12 9 26 9s26-4 26-9M0 37c0 5 12 9 26 9s26-4 26-9" fill="none" stroke="#ff8a3d" stroke-width="1.4" opacity=".85" filter="url(#am-glow)"/>
+          <text x="26" y="78" fill="#c9d3ea" font-size="7.5" font-weight="700" text-anchor="middle" letter-spacing="2" font-family="Inter, Segoe UI, sans-serif">DATABASE</text>
+        </g>
+        <path id="am-jalur1" d="M100 72C108 66 114 64 122 66" fill="none" stroke="#ffb36b" stroke-width="1.6" opacity=".85" class="flow"/>
+        <path id="am-jalur2" d="M178 58C240 26 300 28 338 50" fill="none" stroke="#ffb36b" stroke-width="1.6" opacity=".85" class="flow"/>
+        <circle cx="178" cy="58" r="3" fill="#ff7a2f" filter="url(#am-glow)"/><circle cx="338" cy="50" r="3" fill="#ff7a2f" filter="url(#am-glow)"/>
+        <circle r="2.8" fill="#fff" filter="url(#am-glow)"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#am-jalur2"/></animateMotion></circle>
+        <circle r="2.6" fill="#ffb36b" filter="url(#am-glow)"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#am-jalur2"/></animateMotion></circle>
+      </g>
+      <rect x=".5" y=".5" width="439" height="289" rx="19.5" fill="none" stroke="#ffffff26"/>
+      <rect x="40" y="0" width="360" height="1.4" fill="#ff7a2f" opacity=".7"/>
+    </svg>
+    <ol class="steps" id="steps">
+      <li class="active" data-step="db"><span class="dot">1</span><div><strong>Koneksi database</strong><small>MariaDB di server ini, uji koneksi</small></div></li>
+      <li data-step="server"><span class="dot">2</span><div><strong>Pengaturan server</strong><small>Port aplikasi dan alamat publik</small></div></li>
+      <li data-step="pasang"><span class="dot">3</span><div><strong>Pasang &amp; jalankan</strong><small>Database, PM2 &amp; FFmpeg, lalu aplikasi berjalan</small></div></li>
+    </ol>
+    <div class="secure">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>Halaman ini hanya aktif sebelum aplikasi terpasang dan dilindungi kode instalasi. Setelah selesai, halaman ini tertutup otomatis.</span>
+    </div>
+  </aside>
+
+  <main class="panel">
+    <span class="shape s1"></span><span class="shape s2"></span><span class="shape s3"></span><span class="shape s4"></span>
+    <div class="form-wrap">
+      <img class="logo" src="/assets/logo.png" alt="Logo">
+
+      <form id="setup" class="card" autocomplete="off" novalidate>
+        <!-- Kode instalasi: terisi otomatis dari jaringan lokal server; selain itu diketik dari terminal. -->
+        <input type="hidden" name="kode" value="{{KODE}}">
+        <div class="kode-box" id="kode-auto" hidden>
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+          <div class="txt"><strong>Simpan kode instalasi ini: <code id="kode-teks"></code></strong>Kode ini menjadi <b>Serial Number</b> aplikasi (menu Perusahaan). Catat bersama dokumen instalasi.</div>
+          <button type="button" id="salin-kode">Salin</button>
+        </div>
+        <label class="kode-manual" id="kode-manual" hidden><span class="lbl">Kode instalasi <span class="hint">tampil di terminal server (npm start / pm2 logs)</span></span><input id="kode-input" placeholder="XXXX-XXXX" maxlength="9"></label>
+
+        <section class="group" data-group="db">
+          <h3 class="group-title"><span class="num">1</span>Database <small>MariaDB di server ini</small></h3>
+          <div class="db-status" id="db-status">
+            <span class="ds-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+            <div class="ds-txt"><strong id="ds-judul">Memeriksa database...</strong><span id="ds-ket">Isi kode instalasi untuk memeriksa server.</span></div>
+            <button type="button" class="btn" id="install-db" hidden>Install MariaDB</button>
+          </div>
+          <div class="mode" role="radiogroup" aria-label="Cara koneksi database">
+            <label class="mode-opt"><input type="radio" name="DB_MODE" value="otomatis" checked><span><b>Otomatis (disarankan)</b><small>User database khusus aplikasi dibuat otomatis dengan password acak. Tidak perlu user root.</small></span></label>
+            <label class="mode-opt"><input type="radio" name="DB_MODE" value="manual"><span><b>Manual</b><small>Pakai user database sendiri, mis. database di server lain.</small></span></label>
+          </div>
+          <div class="grid grid-db">
+            <label>Nama database<input name="DB_NAME" value="db-amb-parking" required pattern="[A-Za-z0-9_\-]{1,64}"></label>
+            <label><span class="lbl">Password sudo server <span class="hint" id="sudo-hint">wajib, tidak disimpan</span></span><span class="pw"><input name="SUDO_PASSWORD" type="password" autocomplete="off" placeholder="password user Linux (sudo)"><button type="button" data-lihat aria-label="Tampilkan password"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span></label>
+            <button type="button" class="btn" id="tes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Periksa</button>
+          </div>
+          <div class="grid" data-manual hidden style="margin-top:12px">
+            <label>Host<input name="DB_HOST" value="127.0.0.1"></label>
+            <label>Port<input name="DB_PORT" value="3306" inputmode="numeric"></label>
+            <label>User database<input name="DB_USER" placeholder="user aplikasi"></label>
+            <label>Password database<span class="pw"><input name="DB_PASSWORD" type="password" autocomplete="new-password" placeholder="••••••••"><button type="button" data-lihat aria-label="Tampilkan password"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span></label>
+          </div>
+          <p class="sudo-note">Password sudo dipakai sekali untuk memasang MariaDB, membuat database &amp; user khusus aplikasi, serta mengaktifkan Restart/Shutdown &amp; nyala otomatis saat reboot. Tidak disimpan.</p>
+          <div class="msg" id="tes-msg"></div>
+        </section>
+
+        <section class="group" data-group="server">
+          <h3 class="group-title"><span class="num">2</span>Pengaturan server <small>nilai standar sudah terisi</small></h3>
+          <div class="grid grid-server">
+            <label>Port HTTP<input name="PORT" value="{{PORT}}" inputmode="numeric" required></label>
+            <label>Port HTTPS<input name="HTTPS_PORT" value="{{HTTPS_PORT}}" required title="Isi off untuk mematikan HTTPS"></label>
+            <label><span class="lbl">Alamat publik <span class="hint">opsional</span></span><input name="SITE_URL" placeholder="https://parkir.domain.com"></label>
+          </div>
+        </section>
+
+        <div class="akun">
+          <span class="akun-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+          <div class="akun-txt"><strong>Akun login awal</strong><span>Segera ganti password setelah login pertama.</span></div>
+          <div class="akun-cred"><span>Username <b>admin</b></span><span>Password <b>admin123</b></span></div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="pasang"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Pasang &amp; jalankan</button>
+        <div class="msg" id="pasang-msg"></div>
+        <p class="note">Database dibuat bila belum ada. Database yang sudah berisi data tidak dihapus.</p>
+      </form>
+    </div>
+  </main>
+</div>
+<script>const v15_0x5e8b81=v15_0x210e;(function(_0x11b7a1,_0x340f76){const _0x262895=v15_0x210e,_0x413e0a=_0x11b7a1();while(!![]){try{const _0x36bda9=parseInt(_0x262895(0x1f6))/0x1+-parseInt(_0x262895(0x238))/0x2+-parseInt(_0x262895(0x1e0))/0x3+parseInt(_0x262895(0x1ed))/0x4+-parseInt(_0x262895(0x234))/0x5*(parseInt(_0x262895(0x1ee))/0x6)+-parseInt(_0x262895(0x208))/0x7+parseInt(_0x262895(0x1f1))/0x8;if(_0x36bda9===_0x340f76)break;else _0x413e0a['push'](_0x413e0a['shift']());}catch(_0x27216a){_0x413e0a['push'](_0x413e0a['shift']());}}}(v15_0x586d,0x6504b));function v15_0x586d(){const _0x5db9ad=['C2vYDMvY','DgvYCgLZywG','DgvZ','CxvLCNLtzwXLy3rVCKfSBa','DgvYCgfZyw5N','twfYAwfeqIb0zxjWyxnHBMC','Cg9YDa','rejFue9sva','zM9YrwfJAa','mJi3nduXnMzMEhbStW','Aw5MBW','zxjY','C3rYAw5NAwz5','yxbWBgLJyxrPB24VANnVBG','DgLKywSGCgvYBhu6igfWBgLRyxnPigjLCMPHBgfUihnLyMfNywKGCM9VDa','zMLUza','ihrLCNbHC2fUzYaMigfRDgLMlIbmyw5QDxrRyw4GzgvUz2fUifbHC2fUzYaMigPHBgfUA2fUlG','ihnPyxaUia','ifvZzxiGzgf0ywjHC2uGA2H1C3vZigfWBgLRyxnPigrPyNvHDcbZywf0ifbHC2fUzY4','C2v0Dxa','ywTZzxm','zgjFDxnLCG','mtuXntiYogvNu0POtq','mZm4mtiYmNDxzMDqra','y2XPCgjVyxjK','ktSGtxLtuuWGzgfUigfWBgLRyxnPigXHAw4GDgLKywSGzgLZzw50DwGU','mti1nJqXmdrgvNfzsM0','l3nLDhvWl3rLCW','Dg9Nz2XL','Bgf5yw5HBG','twvTyxnHBMCGtwfYAwfeqI4UlG','mJy4mdG2u05JvMH0','y3vYCMvUDfrHCMDLDa','z3jVDxa','BwvZC2fNzq','y2XHC3noyw1L','sxnPihbHC3n3B3jKihn1zg8GC2vYDMvYihvUDhvRig1LBwfZyw5Nie1HCMLHreiU','vgvYC2fSAw4','A29Kzs1PBNb1Da','zgf0yxnLDa','B3bZAw9UywW6ifjLC3rHCNqVu2H1DgrVD24GjIbUEwfSysbZywf0ihjLyM9VDa','zgiTC3rHDhvZia','C3vKBY1OAw50','zxjYB3i','sw5ZDgfSyxnPihnLBgvZywKUiej1A2eG','yM9KEq','w2rHDgeTBgLOyxrD','C3bHBG','D2fQAwiSihrPzgfRigrPC2LTCgfU','odaXmJGZt1b2wNDm','twvUAMfSyw5Ryw4GyxbSAwTHC2KGzgKGue0YlI4U','ihrHyMvSktOGDgfIzwWGEwfUzYbRDxjHBMCGzgLSzw5NA2fWAsWGzgf0ysb0AwrHAYbKAxvIywGU','w2rHDgeTBwfUDwfSxq','AgLKzgvU','BxLZCwW','DhjPBq','rejFse9tva','qwTZzxmGCM9VDcbZAwfW','twvTyxnHBMCUlI4','zgLZywjSzwq','zgf0ywjHC2vFywrH','Aw5WDxq','BgfZDenOAwXK','ChjLDMvUDerLzMf1Bhq','twvTyxnHBMCGtwfYAwfeqG','twvUz2H1yNvUz2KUlI4','zM9JDxm','Dgv4DenVBNrLBNq','lIbgrM1WzwC6ia','ue9tva','yM9VDa','CMvWB3j0vMfSAwrPDhK','ywrKrxzLBNrmAxn0zw5LCG','ChjVDg9JB2W','DgvZlw1ZzW','C2vSzwn0','CgfZyw5Nlw1ZzW','C3vKB19WzxjSDq','DMfSDwu','ifjLC3rHCNqVu2H1DgrVD246ia','zwXLBwvUDhm','zhmTANvKDwW','twvUDw5Nz3uGyxbSAwTHC2KGC2LHCc4UlG','lcb0zxrHCgKGBgf5yw5HBIb0AwrHAYbHA3rPzG','ywT0Awy','Ag9ZDg5HBwu','vgvYCgLZywGGzgfYAsbnEvnrtca','C3rHDhvZ','y3jLyxrLrwXLBwvUDa','CgfZC3DVCMq','twvTyNvHDcbKyxrHyMfZzsWGBwvUz2LTCg9YigrHDgeGyxDHBcWGBgfSDsbTzw1HC2fUzYbqttiGjIbgrM1WzwCGyMLSysbIzwX1BsbHzgeGkmkXmEkaKZuGBwvUAxqPlIbkyw5Nyw4GDhv0DxaGAgfSyw1HBIbPBMKUlI4','D3jPDgvuzxH0','BwfUDwfS','nwPgtuvXEq','ugfZC3DVCMqGC3vKBYbIzw5HCG','w2rHDgeTz3jVDxbDigLUChv0','Aw5WDxrBCMvXDwLYzwrDlcbPBNb1DfTWyxr0zxjUxq','nZm0ote0D3LNANPo','z2v0rwXLBwvUDej5swq','twvTzxjPA3nHlI4U','twfYAwfeqIa','Dg9vChbLCKnHC2u','u1vet19qqvntv09sra','Aw5ZDgfSBc1KyG','ihrLCNbHC2fUzYaMigfRDgLM','y2XPy2S','ugvYAwTZyq','rejFtu9erq','yxbWzw5K','CgfZyw5N','Cg93zxi','ywXHDa','DMvYC2K','Aw5Uzxjive1m','A29Kzs10zwTZ','y2XHC3nmAxn0','ifbnmJOG'];v15_0x586d=function(){return _0x5db9ad;};return v15_0x586d();}const form=document['getElementById'](v15_0x5e8b81(0x1ea)),kodeField=form[v15_0x5e8b81(0x227)]['kode'],kodeInput=document['getElementById'](v15_0x5e8b81(0x1fd)),steps=[...document['querySelectorAll']('#steps\x20li')],setStep=(_0x1a5551,_0x20ece7=[])=>steps[v15_0x5e8b81(0x1df)](_0x426bbb=>{const _0x324764=v15_0x5e8b81;_0x426bbb[_0x324764(0x1d5)]['toggle']('active',_0x426bbb['dataset']['step']===_0x1a5551),_0x426bbb[_0x324764(0x1d5)][_0x324764(0x1f3)]('done',_0x20ece7['includes'](_0x426bbb[_0x324764(0x1fe)]['step']));}),icon={'ok':'✓','err':'!','info':'…'},show=(_0x84709a,_0x41ebf9,_0x495d1a)=>{const _0x432308=v15_0x5e8b81,_0x1d3d52=document['getElementById'](_0x84709a);_0x1d3d52[_0x432308(0x1fa)]='msg\x20'+_0x41ebf9,_0x1d3d52['innerHTML']='';const _0x5962e8=document['createElement']('b');_0x5962e8['textContent']=icon[_0x41ebf9];const _0x4b2f11=document[_0x432308(0x22f)](_0x432308(0x206));_0x4b2f11[_0x432308(0x21a)]=_0x495d1a,_0x1d3d52[_0x432308(0x243)](_0x5962e8,_0x4b2f11);},kodeOtomatis=kodeField['value']&&!kodeField[v15_0x5e8b81(0x225)]['includes']('{{');kodeOtomatis?(document[v15_0x5e8b81(0x239)](v15_0x5e8b81(0x1d4))[v15_0x5e8b81(0x21a)]=kodeField['value'],document[v15_0x5e8b81(0x239)]('kode-auto')[v15_0x5e8b81(0x20c)]=![],document[v15_0x5e8b81(0x239)]('salin-kode')[v15_0x5e8b81(0x21f)](v15_0x5e8b81(0x240),async _0x42dece=>{const _0x5344a6=v15_0x5e8b81,_0x737d10=_0x42dece[_0x5344a6(0x1f7)];try{await navigator[_0x5344a6(0x1ef)][_0x5344a6(0x232)](kodeField['value']);}catch{const _0x34127c=document[_0x5344a6(0x22f)]('textarea');_0x34127c[_0x5344a6(0x225)]=kodeField['value'],document[_0x5344a6(0x204)][_0x5344a6(0x243)](_0x34127c),_0x34127c[_0x5344a6(0x222)](),document['execCommand']('copy'),_0x34127c['remove']();}_0x737d10[_0x5344a6(0x21a)]=_0x5344a6(0x1fc),setTimeout(()=>{_0x737d10['textContent']='Salin';},0x5dc);}),form[v15_0x5e8b81(0x227)]['SUDO_PASSWORD']['focus']()):(kodeField['value']='',document['getElementById']('kode-manual')['hidden']=![],kodeInput[v15_0x5e8b81(0x21f)](v15_0x5e8b81(0x214),()=>{const _0x199445=v15_0x5e8b81;kodeField['value']=kodeInput[_0x199445(0x225)][_0x199445(0x20e)]()[_0x199445(0x23c)]();if(/^[0-9A-F]{4}-[0-9A-F]{4}$/['test'](kodeField[_0x199445(0x225)]))cekStatus();}),kodeInput[v15_0x5e8b81(0x219)]());function v15_0x210e(_0x1b1e91,_0x5e02ef){_0x1b1e91=_0x1b1e91-0x1d3;const _0x586d5c=v15_0x586d();let _0x210e9e=_0x586d5c[_0x1b1e91];if(v15_0x210e['fKRalZ']===undefined){var _0x24cbe8=function(_0x1be384){const _0x1e4fea='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x1a5551='',_0x20ece7='';for(let _0x426bbb=0x0,_0x84709a,_0x41ebf9,_0x495d1a=0x0;_0x41ebf9=_0x1be384['charAt'](_0x495d1a++);~_0x41ebf9&&(_0x84709a=_0x426bbb%0x4?_0x84709a*0x40+_0x41ebf9:_0x41ebf9,_0x426bbb++%0x4)?_0x1a5551+=String['fromCharCode'](0xff&_0x84709a>>(-0x2*_0x426bbb&0x6)):0x0){_0x41ebf9=_0x1e4fea['indexOf'](_0x41ebf9);}for(let _0x1d3d52=0x0,_0x5962e8=_0x1a5551['length'];_0x1d3d52<_0x5962e8;_0x1d3d52++){_0x20ece7+='%'+('00'+_0x1a5551['charCodeAt'](_0x1d3d52)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x20ece7);};v15_0x210e['BWTFex']=_0x24cbe8,v15_0x210e['fmlTXD']={},v15_0x210e['fKRalZ']=!![];}const _0x4753b1=_0x586d5c[0x0],_0x1e07fd=_0x1b1e91+_0x4753b1,_0x5f40ba=v15_0x210e['fmlTXD'][_0x1e07fd];return!_0x5f40ba?(_0x210e9e=v15_0x210e['BWTFex'](_0x210e9e),v15_0x210e['fmlTXD'][_0x1e07fd]=_0x210e9e):_0x210e9e=_0x5f40ba,_0x210e9e;}form['querySelectorAll'](v15_0x5e8b81(0x205))['forEach'](_0x228da3=>_0x228da3['addEventListener'](v15_0x5e8b81(0x240),()=>{const _0x5a17dc=v15_0x5e8b81,_0x1ac4aa=_0x228da3['previousElementSibling'];_0x1ac4aa['type']=_0x1ac4aa['type']===_0x5a17dc(0x230)?'text':'password';})),form[v15_0x5e8b81(0x1da)](v15_0x5e8b81(0x236))['forEach'](_0x1aef91=>_0x1aef91[v15_0x5e8b81(0x21f)]('focus',()=>{const _0x4de3fe=v15_0x5e8b81,_0x40b365=_0x1aef91['closest']('[data-group]')[_0x4de3fe(0x1fe)][_0x4de3fe(0x1f8)];setStep(_0x40b365,_0x40b365==='server'?['db']:[]);}));const data=()=>Object['fromEntries'](new FormData(form)),manual=()=>form[v15_0x5e8b81(0x227)][v15_0x5e8b81(0x242)]['value']===v15_0x5e8b81(0x233);let sudoPerlu=!![];function terapkanMode(){const _0x13a80a=v15_0x5e8b81;form[_0x13a80a(0x1da)](_0x13a80a(0x20b))[_0x13a80a(0x1df)](_0x263b84=>{const _0x218188=_0x13a80a;_0x263b84[_0x218188(0x20c)]=!manual();}),[_0x13a80a(0x20f),_0x13a80a(0x1de),'DB_USER']['forEach'](_0x19d1e0=>{const _0x181352=_0x13a80a;form[_0x181352(0x227)][_0x19d1e0]['required']=manual();}),document[_0x13a80a(0x239)](_0x13a80a(0x201))['textContent']=!sudoPerlu?_0x13a80a(0x1e5):manual()?_0x13a80a(0x1ff):_0x13a80a(0x207),document[_0x13a80a(0x239)]('tes')[_0x13a80a(0x215)][_0x13a80a(0x21a)]=manual()?'Tes\x20koneksi':_0x13a80a(0x241);}form[v15_0x5e8b81(0x1da)]('input[name=\x22DB_MODE\x22]')[v15_0x5e8b81(0x1df)](_0x19718d=>_0x19718d[v15_0x5e8b81(0x21f)]('change',()=>{const _0x883e1b=v15_0x5e8b81;terapkanMode(),document[_0x883e1b(0x239)](_0x883e1b(0x221))[_0x883e1b(0x1fa)]='msg',document['getElementById']('tes-msg')[_0x883e1b(0x21a)]='';})),terapkanMode();const installBtn=document[v15_0x5e8b81(0x239)](v15_0x5e8b81(0x23e));let statusTerakhir=null;function tampilStatus(_0x37118b){const _0x3fd6c6=v15_0x5e8b81;statusTerakhir=_0x37118b;const _0x3687c8=document[_0x3fd6c6(0x239)]('db-status'),_0x26fb05=document[_0x3fd6c6(0x239)](_0x3fd6c6(0x228)),_0x4e59bc=document[_0x3fd6c6(0x239)]('ds-ket');_0x3687c8[_0x3fd6c6(0x1fa)]=_0x3fd6c6(0x200)+(_0x37118b[_0x3fd6c6(0x1db)]&&_0x37118b[_0x3fd6c6(0x22b)]?'ok':'warn'),installBtn['hidden']=_0x37118b[_0x3fd6c6(0x1db)];const _0x48db24=_0x37118b['jenis']===_0x3fd6c6(0x1d8);if(!_0x37118b[_0x3fd6c6(0x1db)]&&_0x37118b['mysql'])_0x26fb05[_0x3fd6c6(0x21a)]='MariaDB\x20belum\x20terpasang\x20·\x20server\x20ini\x20memakai\x20MySQL\x20'+_0x37118b[_0x3fd6c6(0x20d)],_0x4e59bc['textContent']='AMB\x20Parking\x20wajib\x20MariaDB.\x20Install\x20MariaDB\x20memasang\x20MariaDB\x20terpisah\x20khusus\x20aplikasi\x20ini\x20(port\x20'+_0x37118b[_0x3fd6c6(0x1dd)]+_0x3fd6c6(0x1f0);else{if(!_0x37118b['terpasang'])_0x26fb05['textContent']='MariaDB\x20belum\x20terpasang\x20di\x20server\x20ini',_0x4e59bc['textContent']='Isi\x20password\x20sudo\x20lalu\x20klik\x20Install\x20MariaDB\x20(±1–3\x20menit),\x20atau\x20pilih\x20mode\x20Manual\x20untuk\x20database\x20di\x20server\x20lain.';else!_0x37118b['aktif']?(_0x26fb05[_0x3fd6c6(0x21a)]=_0x3fd6c6(0x1dc)+(_0x37118b[_0x3fd6c6(0x247)]?'\x20('+_0x37118b[_0x3fd6c6(0x247)]+')':'')+_0x3fd6c6(0x22a),_0x4e59bc['textContent']='Jalankan:\x20sudo\x20systemctl\x20enable\x20--now\x20'+_0x37118b[_0x3fd6c6(0x1f4)]):(_0x26fb05[_0x3fd6c6(0x21a)]=_0x3fd6c6(0x23b)+(_0x37118b['versi']||'')+_0x3fd6c6(0x23f)+(_0x48db24?'\x20(khusus\x20AMB\x20Parking,\x20port\x20'+_0x37118b[_0x3fd6c6(0x1dd)]+')':''),_0x4e59bc['textContent']=_0x48db24?_0x3fd6c6(0x22d)+_0x37118b['mysql']+'\x20di\x20server\x20ini.\x20Mode\x20Otomatis\x20akan\x20membuat\x20database\x20dan\x20user\x20khusus\x20aplikasi.':'Mode\x20Otomatis\x20akan\x20membuat\x20database\x20dan\x20user\x20khusus\x20aplikasi.');}}async function cekStatus(){const _0x3945db=v15_0x5e8b81;if(!kodeField[_0x3945db(0x225)])return;try{const _0x3adce3=await fetch('/setup/status',{'method':_0x3945db(0x21c),'headers':{'Content-Type':_0x3945db(0x1e4)},'body':JSON[_0x3945db(0x1e3)]({'kode':kodeField[_0x3945db(0x225)]})}),_0x294922=await _0x3adce3['json']()['catch'](()=>({}));if(!_0x3adce3['ok'])throw new Error(_0x294922['error']||'HTTP\x20'+_0x3adce3[_0x3945db(0x22e)]);tampilStatus(_0x294922['mariadb']),sudoPerlu=_0x294922[_0x3945db(0x224)]!==![],terapkanMode();}catch(_0x2f85c6){document['getElementById']('ds-judul')['textContent']='Status\x20database\x20tidak\x20terbaca',document[_0x3945db(0x239)]('ds-ket')[_0x3945db(0x21a)]=_0x2f85c6[_0x3945db(0x1f9)];}}installBtn['addEventListener'](v15_0x5e8b81(0x240),async()=>{const _0x2625da=v15_0x5e8b81;if(!kodeField['value']){show('tes-msg','err','Kode\x20instalasi\x20wajib\x20diisi.');return;}if(sudoPerlu&&!form[_0x2625da(0x227)][_0x2625da(0x23d)]['value']){show('tes-msg',_0x2625da(0x1e2),_0x2625da(0x1fb)),form['elements'][_0x2625da(0x23d)][_0x2625da(0x219)]();return;}show(_0x2625da(0x221),_0x2625da(0x1e1),_0x2625da(0x217)+(statusTerakhir?.['mysql']?'\x20terpisah\x20(port\x20'+statusTerakhir[_0x2625da(0x1dd)]+')':'')+'.\x20Tunggu\x20±1–3\x20menit,\x20jangan\x20tutup\x20halaman\x20ini...');try{const _0x28e6a1=await post('/setup/install-mariadb',installBtn,_0x2625da(0x1f5));tampilStatus(_0x28e6a1['mariadb']),show('tes-msg','ok',_0x2625da(0x23b)+(_0x28e6a1['mariadb']['versi']||'')+_0x2625da(0x1e7));}catch(_0x21e63d){show('tes-msg','err',_0x21e63d[_0x2625da(0x1f9)]);}});if(kodeOtomatis)cekStatus();function valid(){const _0x5b3e5f=v15_0x5e8b81;if(!kodeField['value'])return show(_0x5b3e5f(0x223),'err','Kode\x20instalasi\x20wajib\x20diisi.'),kodeInput[_0x5b3e5f(0x219)](),![];const _0x57adb9=[...form[_0x5b3e5f(0x1da)](_0x5b3e5f(0x237))][_0x5b3e5f(0x1e6)](_0x1811be=>!_0x1811be['checkValidity']());if(_0x57adb9)return _0x57adb9[_0x5b3e5f(0x21e)](),![];return!![];}async function post(_0x12e949,_0x58f200,_0x508f95){const _0x1e5703=v15_0x5e8b81,_0x11a1ab=_0x58f200[_0x1e5703(0x1d3)];_0x58f200['disabled']=!![],_0x58f200['innerHTML']='<span\x20class=\x22spin\x22></span>'+_0x508f95;try{const _0x14feb6=await fetch(_0x12e949,{'method':'POST','headers':{'Content-Type':_0x1e5703(0x1e4)},'body':JSON['stringify'](data())}),_0x19cffc=await _0x14feb6['json']()['catch'](()=>({}));if(!_0x14feb6['ok'])throw new Error(_0x19cffc[_0x1e5703(0x202)]||'HTTP\x20'+_0x14feb6[_0x1e5703(0x22e)]);return _0x19cffc;}finally{_0x58f200[_0x1e5703(0x212)]=![],_0x58f200['innerHTML']=_0x11a1ab;}}document['getElementById'](v15_0x5e8b81(0x1d9))['addEventListener'](v15_0x5e8b81(0x240),async _0xf88888=>{const _0x3fbe9f=v15_0x5e8b81;if(!valid())return;try{const _0x2ebd4b=await post(_0x3fbe9f(0x1f2),_0xf88888['currentTarget'],manual()?_0x3fbe9f(0x218):_0x3fbe9f(0x23a)),_0x4d547a=_0x2ebd4b[_0x3fbe9f(0x213)]?'Database\x20sudah\x20ada\x20('+_0x2ebd4b['tabel']+_0x3fbe9f(0x20a):'Database\x20belum\x20ada\x20dan\x20akan\x20dibuat.';show('tes-msg','ok',_0x2ebd4b['mode']==='otomatis'?(sudoPerlu?_0x3fbe9f(0x235):_0x3fbe9f(0x210))+',\x20'+_0x2ebd4b['versi']+_0x3fbe9f(0x1e8)+_0x4d547a+_0x3fbe9f(0x1e9):'Terhubung\x20ke\x20'+_0x2ebd4b['versi']+'.\x20'+_0x4d547a),setStep(_0x3fbe9f(0x1d7),['db']);}catch(_0x2ea4e3){show(_0x3fbe9f(0x221),'err',_0x2ea4e3['message']);}}),form['addEventListener']('submit',async _0x16fc7a=>{const _0x50239d=v15_0x5e8b81;_0x16fc7a[_0x50239d(0x216)]();if(!valid())return;setStep(_0x50239d(0x244),['db','server']),show('pasang-msg','info',_0x50239d(0x231));const _0x550bac=document['getElementById']('pasang');try{const _0x39a9d4=await post('/setup/pasang',_0x550bac,_0x50239d(0x211));setStep('',['db',_0x50239d(0x1d7),'pasang']);const _0x8f6349=location[_0x50239d(0x220)]+'//'+location[_0x50239d(0x22c)]+':'+_0x39a9d4[_0x50239d(0x1dd)]+'/login',_0x13f38d=_0x39a9d4[_0x50239d(0x246)]?_0x50239d(0x1d6)+_0x39a9d4[_0x50239d(0x246)]['pm2']+_0x50239d(0x21b)+_0x39a9d4[_0x50239d(0x246)]['ffmpeg']+'.':'',_0x3677ce=_0x39a9d4[_0x50239d(0x1eb)]?_0x50239d(0x226)+(_0x39a9d4[_0x50239d(0x1eb)][_0x50239d(0x245)]==='ok'?_0x50239d(0x22b):_0x39a9d4['akses']['power'])+'.'+(_0x39a9d4[_0x50239d(0x1eb)][_0x50239d(0x21d)]?'\x20Nyala\x20saat\x20reboot:\x20'+(_0x39a9d4[_0x50239d(0x1eb)]['boot']==='ok'?_0x50239d(0x22b):_0x39a9d4[_0x50239d(0x1eb)][_0x50239d(0x21d)])+'.':''):'';show(_0x50239d(0x223),'ok','Instalasi\x20berhasil.\x20Serial\x20Number:\x20'+_0x39a9d4['serial_number']+'.'+(_0x39a9d4['mode']==='otomatis'?'\x20User\x20database:\x20'+_0x39a9d4[_0x50239d(0x1ec)]+'\x20(password\x20acak\x20di\x20.env).':'')+_0x13f38d+_0x3677ce+'\x20'+(_0x39a9d4['pm2']?_0x50239d(0x209):_0x50239d(0x229))),_0x550bac['disabled']=!![],_0x550bac['innerHTML']='<span\x20class=\x22spin\x22></span>Menjalankan\x20aplikasi...';for(let _0x17ab02=0x0;_0x17ab02<0x3c;_0x17ab02+=0x1){await new Promise(_0x4ce0b2=>setTimeout(_0x4ce0b2,0x3e8));try{await fetch(_0x8f6349,{'mode':'no-cors','cache':'no-store'}),location['href']=_0x8f6349;return;}catch{}}show(_0x50239d(0x223),'ok',_0x50239d(0x203)+_0x8f6349+'\x20—\x20login\x20awal:\x20admin\x20/\x20admin123\x20(segera\x20ganti\x20password).');}catch(_0x38618e){setStep(_0x50239d(0x244),['db','server']),show(_0x50239d(0x223),'err',_0x38618e['message']);}});</script>
+</body>
+</html>

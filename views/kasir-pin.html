@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1630">
+<meta name="robots" content="noindex, nofollow">
+<title>Login Kasir | AMB Parking</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=amb">
+<link rel="stylesheet" href="/assets/amb-asset/fonts/inter/inter.css">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/assets/kasir.webmanifest">
+<link rel="apple-touch-icon" href="/assets/kasir-icon-192.png">
+<style>
+:root{--navy:#0b1630;--navy2:#14244a;--navy3:#1d3263;--or:#ff5201;--or2:#ff7a2f;--ink:#0f1a33;--mut:#64708a;--line:#e3e8f1;--bg:#f5f7fb}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{font-family:'Inter var','Inter','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--bg);user-select:none;touch-action:manipulation;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+.shell{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(440px,.95fr);width:100%;height:100vh;height:100dvh}
+
+/* kiri: panel navy AMB */
+.side{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:28px;padding:44px 52px 36px;color:#fff;
+background:radial-gradient(820px 480px at 100% 0%,rgba(255,82,1,.22),transparent 60%),radial-gradient(640px 560px at 0% 100%,rgba(61,104,214,.28),transparent 60%),linear-gradient(160deg,var(--navy),var(--navy2) 55%,#0a1430)}
+.side::before{content:"";position:absolute;inset:0;opacity:.14;background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1.4px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 75%);mask-image:linear-gradient(180deg,#000,transparent 75%);pointer-events:none}
+.side>*:not(.cube){position:relative}
+.cube{position:absolute;right:-80px;bottom:-60px;width:400px;opacity:.09;pointer-events:none;animation:float 9s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(-2deg)}}
+.side-logo{width:min(250px,70%);height:auto;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,.35))}
+.side-body{margin-top:auto;max-width:520px}
+.kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:12px;font-weight:600;letter-spacing:.4px;color:#dbe4f7}
+.kicker i{width:8px;height:8px;border-radius:50%;background:#2fd47c;box-shadow:0 0 0 4px rgba(47,212,124,.18)}
+.side h2{margin:18px 0 12px;font-size:clamp(32px,3.4vw,46px);line-height:1.08;font-weight:800;letter-spacing:-1.2px}
+.side h2 span{background:linear-gradient(90deg,var(--or),#ffb36b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.side p{margin:0;max-width:440px;font-size:15.5px;line-height:1.6;color:#b8c4dd}
+.steps{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+.steps li{display:flex;align-items:center;gap:14px;font-size:14px;color:#e4ebf8}
+.steps b{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:rgba(255,82,1,.14);border:1px solid rgba(255,82,1,.35);color:var(--or2);font-size:14px;font-weight:800}
+.clock{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1)}
+.clock strong{display:block;font-size:40px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1}
+.clock span{display:block;margin-top:6px;font-size:13px;color:#9eabc6}
+.clock em{font-style:normal;font-size:12px;color:#8e9cbb;text-align:right}
+
+/* kanan: kartu PIN */
+.main{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 32px 56px;text-align:center;background:var(--bg)}
+.box{position:relative;width:100%;max-width:400px;padding:34px 32px 30px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 1px 2px rgba(16,24,40,.04),0 24px 48px -20px rgba(11,22,48,.2)}
+.box::before{content:"";position:absolute;left:32px;right:32px;top:0;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--or),var(--or2))}
+.logo{display:block;width:50px;height:auto;margin:0 auto 14px}
+.hello{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--or)}
+h1{margin:6px 0 4px;font-size:27px;font-weight:800;letter-spacing:-.6px;color:var(--navy)}
+.sub{margin:0;font-size:14px;color:var(--mut)}
+.display{display:flex;align-items:center;justify-content:center;gap:14px;height:58px;margin:22px 0 6px;border-radius:14px;background:#f8fafd;border:1.5px solid var(--line)}
+.display i{width:14px;height:14px;border-radius:50%;background:var(--or);box-shadow:0 0 0 4px rgba(255,82,1,.15);animation:pop .12s ease-out}
+.display .ph{width:12px;height:12px;border-radius:50%;background:#d6dce8;animation:none;box-shadow:none}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+.msg{min-height:22px;margin-bottom:10px;font-size:14px;font-weight:600;color:#d92d20}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pad button{height:60px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--navy);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;transition:background .1s,border-color .1s,transform .08s}
+.pad button:hover{border-color:#c9d2e2;background:#fbfcfe}
+.pad button:active{background:var(--navy);border-color:var(--navy);color:#fff;transform:scale(.95)}
+.pad .fn{background:#f1f4f9;border-color:#f1f4f9;color:var(--mut);font-size:15px;font-weight:600}
+.pad .go{grid-column:1/-1;height:56px;margin-top:6px;border:0;border-radius:14px;color:#fff;font-size:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(135deg,var(--or),var(--or2));box-shadow:0 12px 26px -12px rgba(255,82,1,.85)}
+.pad .go:hover{background:linear-gradient(135deg,#f04c00,var(--or2))}
+.pad .go:active{background:#e04800;transform:scale(.98)}
+.pad button:disabled{opacity:.5}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.main>.foot{position:absolute;left:0;right:0;bottom:0;padding:14px 24px;font-size:12.5px;color:#8a95ab}
+.foot strong{color:var(--navy)}
+
+/* Latar abstrak panel kanan: blob warna, grid titik, kubus garis (motif logo AMB) */
+.main{position:relative;overflow:hidden;background:radial-gradient(520px 420px at 105% -5%,rgba(255,82,1,.13),transparent 65%),radial-gradient(560px 480px at -10% 105%,rgba(29,50,99,.13),transparent 65%),radial-gradient(380px 300px at 85% 95%,rgba(255,122,47,.08),transparent 70%),#f5f7fb}
+.main::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(11,22,48,.16) 1px,transparent 1.5px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,transparent 30%,#000 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,transparent 30%,#000 75%)}
+.main::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220' fill='none' stroke='%238a9bc0' stroke-width='2'%3E%3Cpath d='M100 8 188 58v104l-88 50-88-50V58z'/%3E%3Cpath d='M12 58l88 50 88-50M100 108v104'/%3E%3C/svg%3E") right -150px bottom -120px/280px auto no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220' fill='none' stroke='%23ff5201' stroke-width='2'%3E%3Cpath d='M100 8 188 58v104l-88 50-88-50V58z'/%3E%3Cpath d='M12 58l88 50 88-50M100 108v104'/%3E%3Cpath d='M60 50l40-22 40 22-40 22z' fill='%23ff5201' stroke='none'/%3E%3C/svg%3E") left -40px top 40px/150px auto no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220' fill='none' stroke='%238a9bc0' stroke-width='2'%3E%3Cpath d='M100 8 188 58v104l-88 50-88-50V58z'/%3E%3Cpath d='M12 58l88 50 88-50M100 108v104'/%3E%3C/svg%3E") right 9% top 14%/64px auto no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 46'%3E%3Cpath d='M0 23 40 0l40 23-40 23z' fill='%23ff5201'/%3E%3C/svg%3E") left 14% bottom 12%/46px auto no-repeat;animation:ambdrift 14s ease-in-out infinite alternate}
+@keyframes ambdrift{to{transform:translateY(-10px)}}
+.main>*{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.main::after{animation:none}}
+@media (max-height:760px) and (min-width:761px){.side{padding-top:32px;gap:18px}.steps{margin-top:16px}.clock strong{font-size:32px}.box{padding:24px 28px 22px}.logo{width:40px;margin-bottom:8px}.display{height:50px;margin-top:14px}.pad button{height:50px}.pad .go{height:50px}.pad{gap:8px}}
+@media (max-width:1100px) and (min-width:761px){.side{padding:36px}.steps{display:none}}
+
+/* HP: header navy + lembar putih */
+@media (max-width:760px){
+  .shell{display:flex;flex-direction:column}
+  .side{flex:none;gap:12px;align-items:center;text-align:center;padding:calc(20px + env(safe-area-inset-top)) 20px 44px}
+  .side-logo{width:170px}
+  .side-body{margin-top:0}
+  .kicker{display:none}
+  .side h2{margin:4px 0 0;font-size:24px;letter-spacing:-.6px}
+  .side p,.steps,.clock,.cube{display:none}
+  .main{overflow:visible;flex:1;min-height:0;margin-top:-24px;padding:0 16px calc(14px + env(safe-area-inset-bottom));justify-content:flex-start;background:transparent;z-index:1}
+  .main::before,.main::after{display:none}
+  .box{display:flex;flex-direction:column;flex:1;max-width:420px;padding:20px 18px 18px;border-radius:22px}
+  .logo,.hello{display:none}
+  h1{margin:0;font-size:21px}
+  .display{height:clamp(44px,6.5vh,52px);margin:12px 0 2px}
+  .msg{flex:1;min-height:18px;display:flex;align-items:center;justify-content:center;margin:0}
+  .pad{gap:9px}
+  .pad button{height:clamp(42px,7.4vh,68px);font-size:24px}
+  .pad .go{height:clamp(46px,7.6vh,62px)}
+  .foot{display:none}
+}
+@media (prefers-reduced-motion:reduce){.cube,.display i{animation:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <svg class="cube" viewBox="0 0 200 220" fill="none" stroke="#fff" stroke-width="3" aria-hidden="true"><path d="M100 8 188 58v104l-88 50-88-50V58z"/><path d="M12 58l88 50 88-50M100 108v104"/><path d="M60 50l40-22 40 22-40 22z" fill="#ff5201" stroke="none"/></svg>
+    <img class="side-logo" src="/assets/logo-white.png" alt="AMB Parking" width="250" height="92">
+    <div class="side-body">
+      <span class="kicker"><i></i>Terminal Kasir</span>
+      <h2>Siap melayani,<br><span>cepat &amp; tepat.</span></h2>
+      <p>Masuk dengan PIN pribadi Anda untuk mulai melayani kendaraan keluar.</p>
+      <ul class="steps">
+        <li><b>1</b>Scan tiket, plat nomor, atau ID member</li>
+        <li><b>2</b>Terima pembayaran tunai atau cashless</li>
+        <li><b>3</b>Selesaikan transaksi &amp; gate terbuka otomatis</li>
+      </ul>
+    </div>
+    <div class="clock"><div><strong id="pinJam">--:--</strong><span id="pinTgl">&nbsp;</span></div><em>AMB Parking<br>Kasir</em></div>
+  </aside>
+  <main class="main" id="card">
+    <div class="box">
+      <img class="logo" src="/assets/logo-icon.png" alt="AMB Parking">
+      <div class="hello">Selamat datang</div>
+      <h1>Login Kasir</h1>
+      <p class="sub">Masukkan PIN Anda</p>
+      <div class="display" id="dots" aria-live="polite"></div>
+      <div class="msg" id="msg" role="alert"></div>
+      <div class="pad" id="pad">
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+        <button class="fn" data-k="clear">Hapus</button><button data-k="0">0</button><button class="fn" data-k="back" aria-label="Hapus satu digit">&#9003;</button>
+        <button class="go" data-k="go">Masuk</button>
+      </div>
+    </div>
+    <div class="foot">&copy; 2026 <strong>PT Azzka Maju Bersama</strong> &middot; AMB Parking</div>
+  </main>
+</div>
+<script>function v8_0x2d38(_0x8fe363,_0xafb3ad){_0x8fe363=_0x8fe363-0x15e;var _0x5c1ccd=v8_0x5c1c();var _0x2d38cf=_0x5c1ccd[_0x8fe363];if(v8_0x2d38['rMDhOn']===undefined){var _0x3450ca=function(_0x131dba){var _0x10d681='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x2ecc69='',_0x18d30f='';for(var _0x489d7e=0x0,_0x2c0531,_0x671e88,_0x2722da=0x0;_0x671e88=_0x131dba['charAt'](_0x2722da++);~_0x671e88&&(_0x2c0531=_0x489d7e%0x4?_0x2c0531*0x40+_0x671e88:_0x671e88,_0x489d7e++%0x4)?_0x2ecc69+=String['fromCharCode'](0xff&_0x2c0531>>(-0x2*_0x489d7e&0x6)):0x0){_0x671e88=_0x10d681['indexOf'](_0x671e88);}for(var _0x215060=0x0,_0x5ab0d7=_0x2ecc69['length'];_0x215060<_0x5ab0d7;_0x215060++){_0x18d30f+='%'+('00'+_0x2ecc69['charCodeAt'](_0x215060)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x18d30f);};v8_0x2d38['hZCDEB']=_0x3450ca,v8_0x2d38['rsNqBl']={},v8_0x2d38['rMDhOn']=!![];}var _0x39cac3=_0x5c1ccd[0x0],_0x26c2da=_0x8fe363+_0x39cac3,_0x35a815=v8_0x2d38['rsNqBl'][_0x26c2da];return!_0x35a815?(_0x2d38cf=v8_0x2d38['hZCDEB'](_0x2d38cf),v8_0x2d38['rsNqBl'][_0x26c2da]=_0x2d38cf):_0x2d38cf=_0x35a815,_0x2d38cf;}function v8_0x5c1c(){var _0x10f436=['odmZmde2Cgrorffd','Dgv4DenVBNrLBNq','CgLUsMfT','z2v0rwXLBwvUDej5swq','mJbgreXJrfu','ntC2nJroEwfLBg8','mtiWs0PRCM1w','Bg9UzW','mtuXnZa5nMD3ufLgvG','ndG0nLLPsLDxuW','mJG5otq0vLvpvw1X','CgLUvgDS','mtC4ndK2mhjACuXpqG','CMvWBgfJzq','mJKZnevgBhvOCq','BNvTzxjPyW','ndK2ohHPyM5PEq'];v8_0x5c1c=function(){return _0x10f436;};return v8_0x5c1c();}(function(_0x11fd1e,_0x36c5a7){var _0x397c9b=v8_0x2d38,_0xc529c9=_0x11fd1e();while(!![]){try{var _0x219f34=-parseInt(_0x397c9b(0x168))/0x1+parseInt(_0x397c9b(0x16c))/0x2*(-parseInt(_0x397c9b(0x169))/0x3)+parseInt(_0x397c9b(0x16d))/0x4*(parseInt(_0x397c9b(0x167))/0x5)+-parseInt(_0x397c9b(0x163))/0x6+-parseInt(_0x397c9b(0x16b))/0x7+parseInt(_0x397c9b(0x162))/0x8*(parseInt(_0x397c9b(0x160))/0x9)+parseInt(_0x397c9b(0x15e))/0xa;if(_0x219f34===_0x36c5a7)break;else _0xc529c9['push'](_0xc529c9['shift']());}catch(_0x18e5f9){_0xc529c9['push'](_0xc529c9['shift']());}}}(v8_0x5c1c,0x273e2),(function(){var _0x1fe5f4=v8_0x2d38,_0x2ecc69=document['getElementById'](_0x1fe5f4(0x165)),_0x18d30f=document[_0x1fe5f4(0x166)](_0x1fe5f4(0x16e));function _0x489d7e(){var _0x28a411=_0x1fe5f4,_0x2c0531=new Date();_0x2ecc69['textContent']=_0x2c0531['toLocaleTimeString']('id-ID',{'hour':'2-digit','minute':'2-digit'})[_0x28a411(0x15f)]('.',':'),_0x18d30f[_0x28a411(0x164)]=_0x2c0531['toLocaleDateString']('id-ID',{'weekday':'long','day':_0x28a411(0x161),'month':_0x28a411(0x16a),'year':_0x28a411(0x161)});}_0x489d7e(),setInterval(_0x489d7e,0x2710);}()));</script>
+<script>function v9_0x3e54(){var _0x12f190=['CxvLCNLtzwXLy3rVCKfSBa','yNv0Dg9U','mJy1mdy0ofbdqLH3qG','C2fTzs1VCMLNAw4','A2v5','nZaWnJy4ruTQzhjY','nJa5ndeWngLgv3rsuW','Dgv4DenVBNrLBNq','B2zMC2v0v2LKDgG','nJmWotiWmgrewK9Rsa','Aw5Uzxjive1m','BgvUz3rO','ndu3odCYsMj1rwnl','mtjRzgvJBeu','Cg9PBNrLCMrVD24','y2XLyxi','y2XPy2S','ChjLDMvUDerLzMf1Bhq','zgLZywjSzwq','nda0nJG2nhbdzuTvCG','tg9NAw4Gz2fNywW','vgLKywSGzgfWyxqGDgvYAhvIDw5NigTLihnLCNzLCG','yxbWBgLJyxrPB24VANnVBG','yMfJAW','BM93','CMvWBgfJzq','l2THC2LYl2XVz2LU','C3rYAw5NAwz5','BxnN','zgf0yxnLDa','DgvZDa','y2XHC3nmAxn0','mZCWndq5muLQB3rsDq','ywrKrxzLBNrmAxn0zw5LCG','y2f0y2G','z2v0rwXLBwvUDej5swq'];v9_0x3e54=function(){return _0x12f190;};return v9_0x3e54();}function v9_0x403a(_0x18fba9,_0x32d134){_0x18fba9=_0x18fba9-0xf9;var _0x3e54c3=v9_0x3e54();var _0x403af5=_0x3e54c3[_0x18fba9];if(v9_0x403a['yGOVLD']===undefined){var _0x34a084=function(_0x4a9e83){var _0xa2200a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x13be55='',_0x506e50='';for(var _0x51ff92=0x0,_0x27e045,_0x425e5d,_0x560aff=0x0;_0x425e5d=_0x4a9e83['charAt'](_0x560aff++);~_0x425e5d&&(_0x27e045=_0x51ff92%0x4?_0x27e045*0x40+_0x425e5d:_0x425e5d,_0x51ff92++%0x4)?_0x13be55+=String['fromCharCode'](0xff&_0x27e045>>(-0x2*_0x51ff92&0x6)):0x0){_0x425e5d=_0xa2200a['indexOf'](_0x425e5d);}for(var _0x20dd03=0x0,_0x2af246=_0x13be55['length'];_0x20dd03<_0x2af246;_0x20dd03++){_0x506e50+='%'+('00'+_0x13be55['charCodeAt'](_0x20dd03)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x506e50);};v9_0x403a['rzBboK']=_0x34a084,v9_0x403a['Dskvnk']={},v9_0x403a['yGOVLD']=!![];}var _0x24a031=_0x3e54c3[0x0],_0x4da876=_0x18fba9+_0x24a031,_0x55ae3e=v9_0x403a['Dskvnk'][_0x4da876];return!_0x55ae3e?(_0x403af5=v9_0x403a['rzBboK'](_0x403af5),v9_0x403a['Dskvnk'][_0x4da876]=_0x403af5):_0x403af5=_0x55ae3e,_0x403af5;}(function(_0x346e77,_0x339294){var _0x1f8419=v9_0x403a,_0x2c493d=_0x346e77();while(!![]){try{var _0x88083=parseInt(_0x1f8419(0x110))/0x1+-parseInt(_0x1f8419(0x10d))/0x2+parseInt(_0x1f8419(0x117))/0x3+-parseInt(_0x1f8419(0x111))/0x4+parseInt(_0x1f8419(0x114))/0x5+-parseInt(_0x1f8419(0x118))/0x6*(-parseInt(_0x1f8419(0x107))/0x7)+parseInt(_0x1f8419(0xfa))/0x8;if(_0x88083===_0x339294)break;else _0x2c493d['push'](_0x2c493d['shift']());}catch(_0x25cc6e){_0x2c493d['push'](_0x2c493d['shift']());}}}(v9_0x3e54,0xcac66),(function(){var _0x3ea5cf=v9_0x403a,_0x13be55='',_0x506e50=![],_0x51ff92=0x8,_0x27e045=0x4,_0x425e5d=document['getElementById']('dots'),_0x560aff=document[_0x3ea5cf(0x10a)](_0x3ea5cf(0x103)),_0x20dd03=document[_0x3ea5cf(0x10a)]('card'),_0x2af246=document[_0x3ea5cf(0x10a)]('pad');function _0x1b4529(){var _0x3656b0=_0x3ea5cf,_0x10f9d6=Math['max'](0x4,_0x13be55['length']),_0xcade8b='';for(var _0x5c30e4=0x0;_0x5c30e4<_0x10f9d6;_0x5c30e4++)_0xcade8b+=_0x5c30e4<_0x13be55[_0x3656b0(0x116)]?'<i></i>':'<i\x20class=\x22ph\x22></i>';_0x425e5d[_0x3656b0(0x115)]=_0xcade8b;}function _0x18d0e1(_0x4d5c5f){var _0x493ef7=_0x3ea5cf;_0x560aff['textContent']=_0x4d5c5f,_0x20dd03[_0x493ef7(0x106)]['remove']('shake'),void _0x20dd03[_0x493ef7(0x113)],_0x20dd03['classList']['add']('shake'),_0x13be55='',_0x1b4529();}async function _0x2aec66(){var _0x4e04a4=_0x3ea5cf;if(_0x506e50)return;if(_0x13be55['length']<_0x27e045){_0x560aff['textContent']='PIN\x20minimal\x20'+_0x27e045+'\x20digit';return;}_0x506e50=!![],_0x2af246[_0x4e04a4(0x10b)](_0x4e04a4(0x10c))['forEach'](function(_0x3db313){_0x3db313['disabled']=!![];}),_0x560aff[_0x4e04a4(0x112)]='';try{var _0x4c269d=await fetch(_0x4e04a4(0x101),{'method':'POST','headers':{'Content-Type':_0x4e04a4(0xfd)},'credentials':_0x4e04a4(0x10e),'body':JSON[_0x4e04a4(0x102)]({'pin':_0x13be55})}),_0x583993=await _0x4c269d['json']()[_0x4e04a4(0x109)](function(){return{};});if(_0x4c269d['ok']){location[_0x4e04a4(0x100)]('/kasir');return;}_0x18d0e1(_0x583993['error']||_0x4e04a4(0xfb));}catch(_0x42ca24){_0x18d0e1(_0x4e04a4(0xfc));}_0x506e50=![],_0x2af246['querySelectorAll'](_0x4e04a4(0x10c))['forEach'](function(_0x546893){var _0x5deeb7=_0x4e04a4;_0x546893[_0x5deeb7(0xf9)]=![];});}function _0x1a614a(_0x59eac8){var _0x20a34c=_0x3ea5cf;if(_0x506e50)return;if(_0x59eac8===_0x20a34c(0x11a))_0x13be55='';else{if(_0x59eac8==='back')_0x13be55=_0x13be55['slice'](0x0,-0x1);else{if(_0x59eac8==='go')return _0x2aec66();else _0x13be55[_0x20a34c(0x116)]<_0x51ff92&&(_0x13be55+=_0x59eac8);}}_0x560aff[_0x20a34c(0x112)]='',_0x1b4529();}var _0x1a1ed5=0x0;_0x2af246[_0x3ea5cf(0x108)](_0x3ea5cf(0x119),function(_0xacd15d){var _0x41215b=_0x3ea5cf,_0x58d423=_0xacd15d['target']['closest']('button');if(!_0x58d423||_0x58d423['disabled'])return;_0x1a1ed5=Date[_0x41215b(0xff)](),_0xacd15d[_0x41215b(0x11c)](),_0x1a614a(_0x58d423[_0x41215b(0x104)]['k']);}),_0x2af246[_0x3ea5cf(0x108)](_0x3ea5cf(0x11b),function(_0x1e47a3){var _0x16318c=_0x3ea5cf,_0x1ea25d=_0x1e47a3['target']['closest'](_0x16318c(0x10c));if(_0x1ea25d&&Date['now']()-_0x1a1ed5>0x258)_0x1a614a(_0x1ea25d['dataset']['k']);}),document[_0x3ea5cf(0x108)]('keydown',function(_0x315b9e){var _0x4f11a5=_0x3ea5cf;if(/^[0-9]$/[_0x4f11a5(0x105)](_0x315b9e[_0x4f11a5(0x10f)]))_0x1a614a(_0x315b9e['key']);else{if(_0x315b9e[_0x4f11a5(0x10f)]==='Backspace')_0x1a614a(_0x4f11a5(0xfe));else{if(_0x315b9e['key']==='Enter')_0x1a614a('go');else{if(_0x315b9e[_0x4f11a5(0x10f)]==='Escape')_0x1a614a(_0x4f11a5(0x11a));}}}}),_0x1b4529();}()));</script>
+<script>function v10_0x3d3c(_0x2df2a6,_0x5315fa){_0x2df2a6=_0x2df2a6-0x102;var _0x1ffba1=v10_0x1ffb();var _0x3d3c7b=_0x1ffba1[_0x2df2a6];if(v10_0x3d3c['PFBfdT']===undefined){var _0x1f0cd3=function(_0x10e07f){var _0x1abd33='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x541385='',_0x2fd0fc='';for(var _0x299e80=0x0,_0xebe1e4,_0x34d15f,_0x18c029=0x0;_0x34d15f=_0x10e07f['charAt'](_0x18c029++);~_0x34d15f&&(_0xebe1e4=_0x299e80%0x4?_0xebe1e4*0x40+_0x34d15f:_0x34d15f,_0x299e80++%0x4)?_0x541385+=String['fromCharCode'](0xff&_0xebe1e4>>(-0x2*_0x299e80&0x6)):0x0){_0x34d15f=_0x1abd33['indexOf'](_0x34d15f);}for(var _0x463d78=0x0,_0x77538f=_0x541385['length'];_0x463d78<_0x77538f;_0x463d78++){_0x2fd0fc+='%'+('00'+_0x541385['charCodeAt'](_0x463d78)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2fd0fc);};v10_0x3d3c['uUqEjx']=_0x1f0cd3,v10_0x3d3c['IHEiYi']={},v10_0x3d3c['PFBfdT']=!![];}var _0x47249c=_0x1ffba1[0x0],_0xb490c0=_0x2df2a6+_0x47249c,_0x2d35bf=v10_0x3d3c['IHEiYi'][_0xb490c0];return!_0x2d35bf?(_0x3d3c7b=v10_0x3d3c['uUqEjx'](_0x3d3c7b),v10_0x3d3c['IHEiYi'][_0xb490c0]=_0x3d3c7b):_0x3d3c7b=_0x2d35bf,_0x3d3c7b;}function v10_0x1ffb(){var _0x5363cb=['n0H4Ew9Puq','mZe1ndKZAMvhAevb','Dg91y2HLBMq','ywrKrxzLBNrmAxn0zw5LCG','nZeXrxbvwwTS','AgLKzq','mtbZzhfcCNe','mZiYndKXv1HOEu5M','D2vIA2L0rNvSBhnJCMvLBKvSzw1LBNq','ntiYote2owzHCNPjAG','m3ruz0PgEG','nxzXwev0EG','mtq0otq1mMfOy09HDa','Bwf0y2HLCW','mZCYrLDSwhHe','mtm5nZu4nM1zr2vZCW','mteYntyZnhnHBNHUsG','y2f0y2G','mtu5nZzRBNPiswW'];v10_0x1ffb=function(){return _0x5363cb;};return v10_0x1ffb();}(function(_0x4155a2,_0x47393e){var _0x4a7b15=v10_0x3d3c,_0x3acebe=_0x4155a2();while(!![]){try{var _0x1f2b5d=parseInt(_0x4a7b15(0x109))/0x1+parseInt(_0x4a7b15(0x105))/0x2*(-parseInt(_0x4a7b15(0x112))/0x3)+parseInt(_0x4a7b15(0x114))/0x4*(parseInt(_0x4a7b15(0x113))/0x5)+parseInt(_0x4a7b15(0x104))/0x6*(-parseInt(_0x4a7b15(0x108))/0x7)+-parseInt(_0x4a7b15(0x107))/0x8*(-parseInt(_0x4a7b15(0x10c))/0x9)+-parseInt(_0x4a7b15(0x10e))/0xa*(parseInt(_0x4a7b15(0x111))/0xb)+parseInt(_0x4a7b15(0x103))/0xc*(parseInt(_0x4a7b15(0x10f))/0xd);if(_0x1f2b5d===_0x47393e)break;else _0x3acebe['push'](_0x3acebe['shift']());}catch(_0x3dc789){_0x3acebe['push'](_0x3acebe['shift']());}}}(v10_0x1ffb,0x516c5),(function(){var _0x2c2904=v10_0x3d3c,_0x541385=document['documentElement'],_0x2fd0fc=_0x541385['requestFullscreen']||_0x541385['webkitRequestFullscreen'];if(!_0x2fd0fc||!matchMedia('(pointer:coarse)')['matches']||matchMedia('(display-mode:\x20fullscreen)')[_0x2c2904(0x102)])return;function _0x299e80(){var _0x1f48f1=_0x2c2904;if(document['fullscreenElement']||document[_0x1f48f1(0x110)])return;try{var _0xebe1e4=_0x2fd0fc['call'](_0x541385,{'navigationUI':_0x1f48f1(0x10d)});if(_0xebe1e4&&_0xebe1e4['catch'])_0xebe1e4[_0x1f48f1(0x106)](function(){});}catch(_0x34d15f){}}document[_0x2c2904(0x10b)]('click',_0x299e80,!![]),document[_0x2c2904(0x10b)](_0x2c2904(0x10a),_0x299e80,!![]);}()));</script>
+</body>
+</html>
