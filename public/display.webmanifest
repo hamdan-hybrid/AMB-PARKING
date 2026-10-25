@@ -1,0 +1,14 @@
+{
+  "name": "Layar Pelanggan AMB Parking",
+  "short_name": "Layar Pelanggan",
+  "start_url": "/display",
+  "scope": "/display",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "background_color": "#070d1d",
+  "theme_color": "#0b1630",
+  "icons": [
+    { "src": "/assets/kasir-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/kasir-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
