@@ -38,6 +38,7 @@ Di akhir, setup menampilkan ringkasan setiap langkah (**SUCCESS / SKIPPED / NEED
 
 - Alamat: `http://<ip-server>:3004` (port bawaan; HTTPS bawaan di port 3447).
 - Login awal: **admin / admin123**. Segera ganti password di menu **Pengguna**.
+- Metode bayar yang aktif di awal hanya **Tunai** dan **Member**. QRIS dan kartu uang elektronik sudah terdaftar tetapi nonaktif. Aktifkan di menu **Metode Bayar** (Edit → *Metode aktif*) setelah link SDK-nya diisi di menu **Perusahaan**.
 
 Setup aman dijalankan ulang kapan saja. Langkah yang sudah benar dilewati, dan data maupun database tidak dihapus.
 
