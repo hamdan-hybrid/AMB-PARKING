@@ -248,3 +248,13 @@
 /* Input + tombol di sampingnya (Test SDK QRIS) */
 .cp-input-action { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 .cp-input-action .cp-ghost-button { min-height: 46px; }
+
+/* Hasil Test koneksi Hybrid ANPR */
+.cp-anpr-result { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; align-items: start; margin: 0; padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.5; color: var(--cp-ink-2); background: #f6f8fb; border: 1px solid var(--cp-line, #e3e9f2); overflow-wrap: anywhere; }
+.cp-anpr-result[hidden] { display: none; }
+.cp-anpr-result > i { font-size: 17px; line-height: 1.3; }
+.cp-anpr-result ul { grid-column: 2; margin: 0; padding-left: 18px; color: var(--cp-ink-2); }
+.cp-anpr-result.is-success { color: #1a8a58; border-color: #bfe5d2; background: #f1faf5; }
+.cp-anpr-result.is-error { color: #c0392b; border-color: #f2c4c4; background: #fdf3f3; }
+.cp-anpr-result.is-busy > i { animation: cp-spin 1s linear infinite; }
+@keyframes cp-spin { to { transform: rotate(360deg); } }
