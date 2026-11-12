@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS tbl_pengaturan_perangkat (
   wifi_password VARCHAR(63) NULL COMMENT 'Interface: password WiFi untuk config perangkat',
   jenis ENUM('Camera', 'Printer', 'Interface') NOT NULL,
   rtsp_url VARCHAR(500) NULL COMMENT 'Khusus Camera',
+  rtsp_live VARCHAR(500) NULL COMMENT 'Camera: sub-stream untuk CCTV Monitor (opsional)',
   ip_address VARCHAR(45) NULL COMMENT 'Printer & Interface',
   port SMALLINT UNSIGNED NULL COMMENT 'Port untuk cek status',
   id_printer BIGINT UNSIGNED NULL COMMENT 'Interface: printer terhubung',
